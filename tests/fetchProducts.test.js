@@ -8,7 +8,6 @@ describe('1 - Teste a função fetchProducts', () => {
     expect(fetchProducts).toBeInstanceOf(Function);
   })
   it('calls fetch function when fetchProducts("computador") is called?', async () => {
-    const url = `https://api.mercadolibre.com/sites/MLB/search?q=computador`;
     await fetchProducts('computador');
     expect(fetch).toHaveBeenCalled();
   })

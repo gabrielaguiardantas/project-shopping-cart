@@ -102,8 +102,12 @@ const renderProductCart = async (itemID) => {
   const productCartItem = document.querySelector('.cart__items');
   const productCart = await getDataItem(itemID);
   productCartItem.appendChild(createCartItemElement(productCart));
+  getSavedCartItems();
+  const storage = [];
+  for (let i = 0; i < 50; i += 1) {
+  storage.push(JSON.stringify(productCart));
+  } saveCartItems(storage);
 };
-
 /**
  * Função para criar o escutador no botão adicionar ao carrinho
  */
@@ -116,7 +120,9 @@ const renderProductCart = async (itemID) => {
   });
 }
 };
+
 window.onload = async () => {
   await renderProduct();
   eventListenerOnProductButton();
+  getSavedCartItems();
  };
