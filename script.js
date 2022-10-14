@@ -1,12 +1,24 @@
 // Esse tipo de comentário que estão antes de todas as funções são chamados de JSdoc,
 
 // experimente passar o mouse sobre o nome das funções e verá que elas possuem descrições! 
+
+// Fique a vontade para modificar o código já escrito e criar suas próprias funções!
+
+/** 
+ * Função responsável por pegar as informações da lista de produtos gerada pela API
+*/
 const getData = async () => {
   const { results } = await fetchProducts('computador');
   return results;
 };
 
-// Fique a vontade para modificar o código já escrito e criar suas próprias funções!
+/**
+ * Função responsável por pegar as informações do item de acordo com o seu ID, gerada pela API
+ */
+const getDataItem = async (itemID) => {
+  const item = await fetchItem(itemID);
+  return item;
+};
 /**
  * Função responsável por criar e retornar o elemento de imagem do produto.
  * @param {string} imageSource - URL da imagem.
@@ -65,7 +77,7 @@ const renderProduct = async () => {
  * @param {Element} product - Elemento do produto.
  * @returns {string} ID do produto.
  */
-// const getIdFromProductItem = (product) => product.querySelector('span.id').innerText;
+const getIdFromProductItem = (product) => product.querySelector('.item_id').innerText;
 
 /**
  * Função responsável por criar e retornar um item do carrinho.
@@ -75,14 +87,36 @@ const renderProduct = async () => {
  * @param {string} product.price - Preço do produto.
  * @returns {Element} Elemento de um item do carrinho.
  */
-// const createCartItemElement = ({ id, title, price }) => {
-//   const li = document.createElement('li');
-//   li.className = 'cart__item';
-//   li.innerText = `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
-//   li.addEventListener('click', cartItemClickListener);
-//   return li;
-// };
+const createCartItemElement = ({ id, title, price }) => {
+  const li = document.createElement('li');
+  li.className = 'cart__item';
+  li.innerText = `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
+  li.addEventListener('click', () => {
+    li.remove();
+  });
+  return li;
+};
 
+// função para renderizar os produtos no carrinho(no DOM)
+const renderProductCart = async (itemID) => {
+  const productCartItem = document.querySelector('.cart__items');
+  const productCart = await getDataItem(itemID);
+  productCartItem.appendChild(createCartItemElement(productCart));
+};
+
+/**
+ * Função para criar o escutador no botão adicionar ao carrinho
+ */
+ const eventListenerOnProductButton = () => {
+  const button = document.getElementsByClassName('item__add');
+  for (let i = 0; i < button.length; i += 1) {
+  button[i].addEventListener('click', () => {
+    const item = button[i].parentElement;
+    renderProductCart(getIdFromProductItem(item));
+  });
+}
+};
 window.onload = async () => {
-  renderProduct();
+  await renderProduct();
+  eventListenerOnProductButton();
  };
