@@ -82,6 +82,8 @@ const getIdFromProductItem = (product) => product.querySelector('.item_id').inne
 let storage = [];
 let sumOfValues = 0;
 const value = document.querySelector('.total-price');
+const productCartItem = document.querySelector('.cart__items');
+const emptyCart = document.querySelector('.empty-cart');
 // função para salvar o carrinho
 
 const saveCartList = (param) => {
@@ -92,7 +94,6 @@ const saveCartList = (param) => {
 const removeCartItem = (param) => {
   storage = storage.filter((object) => 
     object.id !== param);
-  console.log(param, storage);
   saveCartItems(JSON.stringify(storage));
 };
 
@@ -122,7 +123,6 @@ const createCartItemElement = ({ id, title, price }) => {
  * Função para criar o valor total do carrinho
  */
  const totalPrice = (price) => {
-  console.log(price);
   // const cartListObjects = JSON.parse(getSavedCartItems());
   // sumOfValues = 0;
   // cartListObjects.forEach((object) => {
@@ -135,7 +135,6 @@ const createCartItemElement = ({ id, title, price }) => {
 
 // função para renderizar os produtos no carrinho(no DOM)
 const renderProductCart = async (itemID) => {
-  const productCartItem = document.querySelector('.cart__items');
   const productCart = await getDataItem(itemID);
   productCartItem.appendChild(createCartItemElement(productCart));
   saveCartList(productCart);
@@ -144,7 +143,6 @@ const renderProductCart = async (itemID) => {
 
 // testando 
 const renderProductCart2 = (object) => {
-  const productCartItem = document.querySelector('.cart__items');
   productCartItem.appendChild(createCartItemElement(object));
   totalPrice();
 };
@@ -160,6 +158,23 @@ const renderProductCart2 = (object) => {
   });
 }
 };
+/**
+ * Função que cria o evento do botão de limpeza do carrinho e abaixo já chamamos o escutador.
+ */
+const eventListenerOnClearCartButton = () => {
+  productCartItem.replaceChildren();
+  localStorage.removeItem('cartItems');
+};
+
+emptyCart.addEventListener('click', eventListenerOnClearCartButton);
+
+/**
+ * Função para adicionar ao DOM enquanto carrega a requisição da API
+ */
+const waitingApiFetch = () => {
+  const div = productCartItem.appendChild('div').className('loading');
+
+}
 
 window.onload = async () => {
   await renderProduct();
