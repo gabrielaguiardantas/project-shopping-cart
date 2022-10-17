@@ -170,11 +170,11 @@ emptyCart.addEventListener('click', eventListenerOnClearCartButton);
 
 /**
  * Função para adicionar ao DOM enquanto carrega a requisição da API
- */
-const waitingApiFetch = () => {
-  const div = productCartItem.appendChild('div').className('loading');
-
-}
+ */ 
+// const waitingApiFetch = () => {
+//   const div = productCartItem.appendChild('div').className('loading');
+//   div.innerText = 'carregando...'; 
+// };  amanhã continuooooooo   
 
 window.onload = async () => {
   await renderProduct();
