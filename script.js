@@ -113,7 +113,6 @@ const createCartItemElement = ({ id, title, price }) => {
     li.remove();
     sumOfValues -= price;
     value.innerText = `Total de $${sumOfValues}`;
-    console.log(sumOfValues);
     removeCartItem(id);
   });
   return li;
@@ -144,7 +143,7 @@ const renderProductCart = async (itemID) => {
 // testando 
 const renderProductCart2 = (object) => {
   productCartItem.appendChild(createCartItemElement(object));
-  totalPrice();
+  totalPrice(object.price);
 };
 /**
  * Função para criar o escutador no botão adicionar ao carrinho
@@ -168,16 +167,9 @@ const eventListenerOnClearCartButton = () => {
 
 emptyCart.addEventListener('click', eventListenerOnClearCartButton);
 
-/**
- * Função para adicionar ao DOM enquanto carrega a requisição da API
- */ 
-// const waitingApiFetch = () => {
-//   const div = productCartItem.appendChild('div').className('loading');
-//   div.innerText = 'carregando...'; 
-// };  amanhã continuooooooo   
-
 window.onload = async () => {
   await renderProduct();
+  document.querySelector('.loading').remove();
   eventListenerOnProductButton();
   if (localStorage.length === 1) {
   const cartListObjects = JSON.parse(getSavedCartItems());
